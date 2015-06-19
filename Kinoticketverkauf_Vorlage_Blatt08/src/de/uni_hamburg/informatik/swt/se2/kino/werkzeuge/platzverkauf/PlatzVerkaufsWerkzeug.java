@@ -104,7 +104,7 @@ public class PlatzVerkaufsWerkzeug
         
         _bezahlWerkzeug.bezahle();
         
-        if(_bezahlWerkzeug.istOKButton())
+        if(_bezahlWerkzeug.wurdeBezahlt())
         {
             verkaufePlaetze(_vorstellung);
         }

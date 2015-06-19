@@ -17,7 +17,7 @@ public class BezahlWerkzeug
 
     public BezahlWerkzeug()
     {
-        
+    
     }
 
     public void setzePlaetze(Set<Platz> plaetze, Vorstellung vorstellung)
@@ -39,6 +39,21 @@ public class BezahlWerkzeug
 
     public void bezahle()
     {
-        _ui = new BezahlWerkzeugUI(_preis);
+        _ui = new BezahlWerkzeugUI(_preis, getVorstellungsDaten(), _anzahlPlaetze);
     }
+    
+    private String getVorstellungsDaten()
+    {
+    	return (
+    			_vorstellung.getFilm().toString().toUpperCase() 
+    		   + " - "
+    		   + _vorstellung.getDatum()
+    		   + " (Saal "
+    		   + _vorstellung.getKinosaal()
+    		   + ": "
+    		   + _vorstellung.getAnfangszeit()
+    		   + ")"
+    	);
+    }
+    
 }

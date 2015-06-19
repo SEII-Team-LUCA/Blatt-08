@@ -9,6 +9,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import de.uni_hamburg.informatik.swt.se2.kino.materialien.Vorstellung;
+
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
@@ -28,11 +30,20 @@ public class BezahlWerkzeugUI extends JDialog
     private JPanel _textFelder;
     private boolean _istOKButton;
     
+    private JPanel _vorangaben;
+    private JLabel _vorstellungsText;
+    private JLabel _anzahlPlaetzeText;
+    
+    private String _vorstellungsDaten;
+    private int _anzahlPlaetze;
     private int _preis;
 
-    public BezahlWerkzeugUI(int preis)
+    public BezahlWerkzeugUI(int preis, String vorstellungsDaten, int anzahlPlaetze)
     {
         _preis = preis;
+        _vorstellungsDaten = vorstellungsDaten;
+        _anzahlPlaetze = anzahlPlaetze;
+        
         _istOKButton = false;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setupGUI();
@@ -44,14 +55,43 @@ public class BezahlWerkzeugUI extends JDialog
 
     private void setupGUI()
     {
+        setupFachwerte();
+        setupGrid();
         setupKnoepfe();
-        setupFelder();
     }
 
-    private void setupFelder()
+    private void setupFachwerte()
+    {
+        setupVorangaben();
+        setupVorstellungText();
+        setupAnzahlPlaetzeText();
+    }
+    
+    private void setupVorangaben()
+    {
+        _vorangaben = new JPanel(new FlowLayout());
+        
+    }
+    
+    private void setupVorstellungText()
+    {
+        _vorstellungsText = new JLabel();
+        _vorstellungsText.setText(_vorstellungsDaten);
+        _vorstellungsText.setToolTipText("FILM - Datum (Saal x: Zeit)");
+        _vorangaben.add(this);
+    }
+    
+    private void setupAnzahlPlaetzeText()
+    {
+        _anzahlPlaetzeText = new JLabel();
+        _anzahlPlaetzeText.setText("Ausgewählte Plätze: " + _anzahlPlaetze);
+        _anzahlPlaetzeText.setToolTipText("Zeigt die Anzahl der aktuell ausgewählten Plätze");
+    }
+    
+    private void setupGrid()
     {
         setupTextFelderJPanel();
-        setupTextFelder();
+        setupFelder();
         setupEingabeWerte();
     }
 
@@ -69,7 +109,7 @@ public class BezahlWerkzeugUI extends JDialog
         setupRestbetragAnzeiger();
     }
 
-    private void setupTextFelder()
+    private void setupFelder()
     {
         setupEingabeFeldText();
         setupSummenAzeigerText();
@@ -78,49 +118,57 @@ public class BezahlWerkzeugUI extends JDialog
 
     private void setupTextFelderJPanel()
     {
-        _textFelder = new JPanel(new GridLayout());
-
+        _textFelder = new JPanel(new GridLayout(2,3));
     }
 
     private void setupKnoepfeJPanel()
     {
         _knoepfe = new JPanel(new FlowLayout());
-
     }
 
     private void setupRestbetragAnzeigerText()
     {
-        // TODO Auto-generated method stub
-
+        _restbetragAnzeigerText = new JLabel();
+        _restbetragAnzeigerText.setText("Rückgeld:");
+        _restbetragAnzeigerText.setToolTipText("Zeigt den Saldo der Kasse an.");
     }
 
     private void setupSummenAzeigerText()
     {
-        // TODO Auto-generated method stub
-
+        _summeAnzeigerText = new JLabel();
+        _summeAnzeigerText.setText("Zu zahlen:");
+        _summeAnzeigerText.setToolTipText("Zeigt den addierten Preis aller gewählten Sitzplätze an.");
     }
 
     private void setupEingabeFeldText()
     {
-        // TODO Auto-generated method stub
-
+        _eingabeFeldText = new JLabel();
+        _eingabeFeldText.setText("Gegeben (BAR):");
+        _eingabeFeldText.setToolTipText("Hier eingeben, was der Kunde in Bar gegeben hat.");
     }
 
     private void setupRestbetragAnzeiger()
     {
-        // TODO Auto-generated method stub
-
+        _restbetragAnzeigerText = new JLabel();
     }
 
     private void setupSummenAzeiger()
     {
-        // TODO Auto-generated method stub
-
+        _summeAnzeiger = new JLabel();
     }
 
     private void setupEingabeFeld()
     {
-        // TODO Auto-generated method stub
+        _eingabeFeld = new JTextField();
+        
+        _eingabeFeld.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+//            	_restbetragAnzeiger._____________();
+            }
+        });
 
     }
 

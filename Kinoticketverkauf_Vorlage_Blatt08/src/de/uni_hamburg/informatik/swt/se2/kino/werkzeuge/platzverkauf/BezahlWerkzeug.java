@@ -17,7 +17,7 @@ public class BezahlWerkzeug
 
     public BezahlWerkzeug()
     {
-    
+    	
     }
 
     public void setzePlaetze(Set<Platz> plaetze, Vorstellung vorstellung)

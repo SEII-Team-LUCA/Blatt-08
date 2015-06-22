@@ -46,11 +46,11 @@ public class BezahlWerkzeugUI extends JDialog
         
         _istOKButton = false;
         this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-        setupGUI();
         this.setLayout(new BorderLayout());
+        setupGUI();
         this.setModal(true); //blockt das aufrufende Fenster
         this.pack();
-
+        this.setVisible(true);
     }
 
     private void setupGUI()
@@ -58,6 +58,7 @@ public class BezahlWerkzeugUI extends JDialog
         setupFachwerte();
         setupGrid();
         setupKnoepfe();
+        setVisible(true);
     }
 
     private void setupFachwerte()
@@ -77,7 +78,7 @@ public class BezahlWerkzeugUI extends JDialog
     {
         _vorstellungsText = new JLabel();
         _vorstellungsText.setText(_vorstellungsDaten);
-        _vorstellungsText.setToolTipText("FILM - Datum (Saal x: Zeit)");
+        _vorstellungsText.setToolTipText("[Datum] FILM (Saal x: Zeit)");
         _vorangaben.add(this);
     }
     

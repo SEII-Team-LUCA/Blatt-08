@@ -92,14 +92,14 @@ public class BezahlWerkzeugUI extends JDialog
         setTitle(TITEL);
         setModal(true); // blockt das aufrufende Fenster
         pack();
-        setResizable(false);
-        setVisible(true);
-
         Dimension d = Toolkit.getDefaultToolkit()
             .getScreenSize();
         int x = (d.width - getSize().width) / 2;
         int y = (d.height - getSize().height) / 2;
         setLocation(x - (this.getWidth() / 2), y - (this.getHeight() / 2));
+        setResizable(false);
+        setVisible(true);
+
     }
 
     private void setupVorangaben()

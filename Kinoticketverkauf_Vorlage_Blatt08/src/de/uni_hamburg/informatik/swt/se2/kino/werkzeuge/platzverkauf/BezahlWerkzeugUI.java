@@ -52,6 +52,9 @@ public class BezahlWerkzeugUI extends JDialog
         this.pack();
         this.setVisible(true);
     }
+    
+    public BezahlWerkzeugUI()
+    { }
 
     private void setupGUI()
     {

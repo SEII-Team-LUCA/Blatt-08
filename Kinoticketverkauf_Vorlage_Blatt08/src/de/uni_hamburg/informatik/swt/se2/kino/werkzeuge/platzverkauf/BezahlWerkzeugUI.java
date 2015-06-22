@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import javax.print.attribute.standard.JobName;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComponent;
@@ -18,6 +19,7 @@ import javax.swing.JTextField;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -50,9 +52,9 @@ public class BezahlWerkzeugUI extends JDialog
     private int _preis;
 
     private static final String TITEL = "SE2-Bezahlungsansicht SoSe 2015";
-    private JFrame _frame;
-
-    private float _eingabe;
+    private double _eingabe;
+    private int _anzahlKommata;
+    private int _nachkommastellen;
 
     public BezahlWerkzeugUI(int preis, String vorstellungsDaten,
             int anzahlPlaetze)
@@ -62,6 +64,7 @@ public class BezahlWerkzeugUI extends JDialog
         _anzahlPlaetze = anzahlPlaetze;
 
         _istOKButton = false;
+        _anzahlKommata = 0;
 
         setupGUI();
     }
@@ -86,6 +89,7 @@ public class BezahlWerkzeugUI extends JDialog
         setupTextFelder();
         setupKnoepfe();
 
+        setTitle(TITEL);
         setModal(true); // blockt das aufrufende Fenster
         pack();
         setResizable(false);
@@ -130,13 +134,14 @@ public class BezahlWerkzeugUI extends JDialog
         _textFelder.add(_summeAnzeigerText);
 
         _summeAnzeiger = new JLabel();
-        _summeAnzeiger.setText((_preis / 100) + "," + (_preis % 100) + "");
+        _summeAnzeiger.setText((_preis / 100) + "." + preisberechnung() + "");
         _summeAnzeiger.setToolTipText("Zeigt den addierten Preis aller gewählten Sitzplätze an.");
         _textFelder.add(_summeAnzeiger);
 
         _eingabeFeldText = new JLabel();
         _eingabeFeldText.setText("Gegeben (In €):");
-        _eingabeFeldText.setToolTipText("Hier eingeben, was der Kunde in Bar gegeben hat.");
+        _eingabeFeldText.setToolTipText("Hier eingeben, was der Kunde in Bar gegeben hat.\n"
+                + "Bitte nur 2 Nachkommastellen.");
         _textFelder.add(_eingabeFeldText);
 
         _eingabeFeld = new JTextField();
@@ -148,34 +153,114 @@ public class BezahlWerkzeugUI extends JDialog
             @Override
             public void keyTyped(KeyEvent e)
             {
-                // TODO Auto-generated method stub
+                //                char c = e.getKeyChar();
+                switch (e.getKeyChar())
+                {
+                case ',':
+                    int position = _eingabeFeld.getCaretPosition();
+                    e.consume();
+                    if (_eingabeFeld.getCaretPosition() == 0)
+                    {
+                    }
+                    else if (_anzahlKommata < 1)
+                    {
+                        _eingabeFeld.setText(_eingabeFeld.getText()
+                            .substring(0, position) + "."
+                                + _eingabeFeld.getText()
+                                    .substring(position));
+                        _anzahlKommata++;
+                        refresh();
+                        _eingabeFeld.setCaretPosition(position + 1);
+                        break;
+                    }
+
+                    getToolkit().beep();
+                    break;
+                case '.':
+                    if (_eingabeFeld.getCaretPosition() == 0
+                            || _anzahlKommata > 0)
+                    {
+                        //                        _eingabeFeld.setText(_eingabeFeld.getText().substring(_eingabeFeld.getText().length()-2));
+                        getToolkit().beep();
+                        e.consume();
+                        break;
+                    }
+                    _anzahlKommata++;
+                    refresh();
+                    break;
+                case KeyEvent.VK_BACK_SPACE:
+                case KeyEvent.VK_DELETE:
+                    if (wurdeEinKommaGeloescht())
+                    {
+                        _anzahlKommata--;
+                    }
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    if (_anzahlKommata == 1)
+                    {
+                        if (_eingabeFeld.getText()
+                            .indexOf('.') + 2 == _eingabeFeld.getText()
+                            .length())
+                        {
+                            _nachkommastellen = 2;
+                        }
+                        else if (_eingabeFeld.getText()
+                            .indexOf('.') + 2 < _eingabeFeld.getText()
+                            .length())
+                        {
+                            _nachkommastellen = 2;
+                            getToolkit().beep();
+                            e.consume();
+                        }
+                        else
+                        {
+                            _nachkommastellen = 1;
+                        }
+                    }
+                    else
+                    {
+                        _nachkommastellen = 1;
+                    }
+                    refresh();
+                    break;
+                default:
+                    getToolkit().beep();
+                    e.consume();
+                }
 
             }
 
             @Override
             public void keyReleased(KeyEvent e)
             {
-                // TODO Auto-generated method stub
 
             }
 
             @Override
             public void keyPressed(KeyEvent e)
             {
-                try
-                {
-                    do
-                    {
-                        _eingabe = Float.parseFloat(_eingabeFeld.getText());
-                        aktualisiereRestbetragAnzeiger();
-                    }
-                    while (_eingabeFeld.getText()
-                        .equals("(\\s+\\d+([,\\.]\\d\\d?)?\\s+)"));
-                }
-                catch (NumberFormatException e1)
-                {
-                    fehler();
-                }
+                //                try
+                //                {
+                //                    do
+                //                    {
+                //                        _eingabe = Float.parseFloat(_eingabeFeld.getText());
+                //                        aktualisiereRestbetragAnzeiger();
+                //                    }
+                //                    while (_eingabeFeld.getText()
+                //                        .equals("(\\s+\\d+([,\\.]\\d\\d?)?\\s+)"));
+                //                }
+                //                catch (NumberFormatException e1)
+                //                {
+                //                    fehler();
+                //                }
 
             }
         });
@@ -195,12 +280,60 @@ public class BezahlWerkzeugUI extends JDialog
 
     }
 
-    private void fehler()
+    private String preisberechnung()
     {
-        JOptionPane error = new JOptionPane(JOptionPane.OK_OPTION);
-        error.showMessageDialog(this, "Bitte nur Zahlen eingeben.", "Warnung",
-                JOptionPane.WARNING_MESSAGE);
-        error.setVisible(true);
+        if (_preis % 100 < 10)
+        {
+            return "0" + String.valueOf(_preis % 100);
+        }
+        else
+        {
+            return String.valueOf(_preis % 100);
+        }
+    }
+
+    private void refresh()
+    {
+        if (!_eingabeFeld.getText()
+            .isEmpty())
+        {
+            _eingabe = Double.parseDouble(_eingabeFeld.getText());
+            aktualisiereRestbetragAnzeiger();
+
+            if (_restbetragAnzeiger.getText()
+                .charAt(0) == '-' || _restbetragAnzeiger.getText()
+                .equals("0.0"))
+            {
+                _okButton.setEnabled(true);
+            }
+            else
+            {
+                _okButton.setEnabled(false);
+            }
+        }
+    }
+
+    /*private void fehler()
+     {
+         JOptionPane error = new JOptionPane(JOptionPane.OK_OPTION);
+         error.showMessageDialog(this, "Bitte nur Zahlen eingeben.", "Warnung",
+                 JOptionPane.WARNING_MESSAGE);
+         error.setVisible(true);
+     }*/
+
+    private boolean wurdeEinKommaGeloescht()
+    {
+        if (String.valueOf(_eingabe)
+            .contains("."))
+        {
+            if (!_eingabeFeld.getText()
+                .contains("."))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void setupKnoepfe()
@@ -211,6 +344,7 @@ public class BezahlWerkzeugUI extends JDialog
         _okButton = new JButton();
         _okButton.setText("OK");
         _okButton.setToolTipText("Führt den Bezahlvorgang aus.");
+        _okButton.setEnabled(false);
         _okButton.addActionListener(new ActionListener()
         {
             @Override
@@ -239,8 +373,15 @@ public class BezahlWerkzeugUI extends JDialog
 
     private void aktualisiereRestbetragAnzeiger()
     {
-        _restbetragAnzeiger.setText(Integer.parseInt(_summeAnzeiger.getText())
+        _restbetragAnzeiger.setText(Double.parseDouble(_summeAnzeiger.getText())
                 - _eingabe + "");
+        if (_nachkommastellen == 1 || _eingabeFeld.getText()
+            .substring(_eingabeFeld.getText()
+                .length() - 2)
+            .equals("00"))
+        {
+            _restbetragAnzeiger.setText(_restbetragAnzeiger.getText() + "0");
+        }
     }
 
     private void schliessen()

@@ -40,6 +40,7 @@ public class BezahlWerkzeugUI extends JDialog
 
     public BezahlWerkzeugUI(int preis, String vorstellungsDaten, int anzahlPlaetze)
     {
+    	System.out.println("Mau?");
         _preis = preis;
         _vorstellungsDaten = vorstellungsDaten;
         _anzahlPlaetze = anzahlPlaetze;

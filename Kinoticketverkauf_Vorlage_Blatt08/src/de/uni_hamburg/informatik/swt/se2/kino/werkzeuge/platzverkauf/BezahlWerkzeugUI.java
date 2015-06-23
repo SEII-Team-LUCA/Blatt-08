@@ -237,7 +237,6 @@ public class BezahlWerkzeugUI extends JDialog
                     getToolkit().beep();
                     e.consume();
                 }
-
             }
 
             @Override
@@ -304,7 +303,7 @@ public class BezahlWerkzeugUI extends JDialog
 
             if (_restbetragAnzeiger.getText()
                 .charAt(0) == '-' || _restbetragAnzeiger.getText()
-                .equals("0.0"))
+                .equals("0.00"))
             {
                 _okButton.setEnabled(true);
             }

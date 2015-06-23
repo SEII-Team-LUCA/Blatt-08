@@ -153,12 +153,12 @@ public class BezahlWerkzeugUI extends JDialog
             public void keyTyped(KeyEvent e)
             {
                 //                char c = e.getKeyChar();
+                int position = _eingabeFeld.getCaretPosition();
                 switch (e.getKeyChar())
                 {
                 case ',':
-                    int position = _eingabeFeld.getCaretPosition();
                     e.consume();
-                    if (_eingabeFeld.getCaretPosition() == 0)
+                    if (position == 0)
                     {
                     }
                     else if (_anzahlKommata < 1)
@@ -176,7 +176,7 @@ public class BezahlWerkzeugUI extends JDialog
                     getToolkit().beep();
                     break;
                 case '.':
-                    if (_eingabeFeld.getCaretPosition() == 0
+                    if (position == 0
                             || _anzahlKommata > 0)
                     {
                         //                        _eingabeFeld.setText(_eingabeFeld.getText().substring(_eingabeFeld.getText().length()-2));

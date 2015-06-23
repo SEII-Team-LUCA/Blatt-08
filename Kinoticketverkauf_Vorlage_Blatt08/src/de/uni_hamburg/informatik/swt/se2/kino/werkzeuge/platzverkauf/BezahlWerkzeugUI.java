@@ -23,6 +23,10 @@ import java.awt.Toolkit;
 public class BezahlWerkzeugUI extends JDialog
 {
 
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L; //Seriennummer weil JDialog
     private JPanel _vorangaben;
     private JLabel _vorstellungsText;
     private JLabel _anzahlPlaetzeText;
@@ -53,7 +57,7 @@ public class BezahlWerkzeugUI extends JDialog
     public BezahlWerkzeugUI(int preis, String vorstellungsDaten,
             int anzahlPlaetze)
     {
-    	System.out.println("Mau?");
+        System.out.println("Mau?");
         _preis = preis;
         _vorstellungsDaten = vorstellungsDaten;
         _anzahlPlaetze = anzahlPlaetze;

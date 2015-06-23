@@ -161,7 +161,9 @@ public class BezahlWerkzeugUI extends JDialog
                     if (position == 0)
                     {
                     }
-                    else if (_anzahlKommata < 1 && position + 2 >= _eingabeFeld.getText().length())
+                    else if (_anzahlKommata < 1
+                            && position + 2 >= _eingabeFeld.getText()
+                                .length())
                     {
                         _eingabeFeld.setText(_eingabeFeld.getText()
                             .substring(0, position) + "."
@@ -175,8 +177,9 @@ public class BezahlWerkzeugUI extends JDialog
                     getToolkit().beep();
                     break;
                 case '.':
-                    if (position == 0
-                            || _anzahlKommata > 0 || position + 2 < _eingabeFeld.getText().length())
+                    if (position == 0 || _anzahlKommata > 0
+                            || position + 2 < _eingabeFeld.getText()
+                                .length())
                     {
                         //                        _eingabeFeld.setText(_eingabeFeld.getText().substring(_eingabeFeld.getText().length()-2));
                         getToolkit().beep();
@@ -212,6 +215,7 @@ public class BezahlWerkzeugUI extends JDialog
                         }
                         else if (_eingabeFeld.getText()
                             .indexOf('.') + 2 < _eingabeFeld.getText()
+                            .length() && position + 2 > _eingabeFeld.getText()
                             .length())
                         {
                             _nachkommastellen = 2;

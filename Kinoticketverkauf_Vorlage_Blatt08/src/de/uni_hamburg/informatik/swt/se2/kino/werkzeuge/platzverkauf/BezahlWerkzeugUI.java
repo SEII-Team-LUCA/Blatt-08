@@ -128,7 +128,7 @@ public class BezahlWerkzeugUI extends JDialog
         _textFelder = new JPanel(new GridLayout(3, 2));
 
         _summeAnzeigerText = new JLabel();
-        _summeAnzeigerText.setText("Zu zahlen (In €):");
+        _summeAnzeigerText.setText("Zu zahlen (In €.Cent):");
         _summeAnzeigerText.setToolTipText("Zeigt den addierten Preis aller gewählten Sitzplätze an.");
         _textFelder.add(_summeAnzeigerText);
 
@@ -138,7 +138,7 @@ public class BezahlWerkzeugUI extends JDialog
         _textFelder.add(_summeAnzeiger);
 
         _eingabeFeldText = new JLabel();
-        _eingabeFeldText.setText("Gegeben (In €):");
+        _eingabeFeldText.setText("Gegeben (In €.Cent):");
         _eingabeFeldText.setToolTipText("Hier eingeben, was der Kunde in Bar gegeben hat.\n"
                 + "Bitte nur 2 Nachkommastellen.");
         _textFelder.add(_eingabeFeldText);
@@ -268,7 +268,7 @@ public class BezahlWerkzeugUI extends JDialog
         _textFelder.add(_eingabeFeld);
 
         _restbetragAnzeigerText = new JLabel();
-        _restbetragAnzeigerText.setText("Rückgeld (In €):");
+        _restbetragAnzeigerText.setText("Rückgeld (In €.Cent):");
         _restbetragAnzeigerText.setToolTipText("Zeigt den Saldo der Kasse an.");
         _textFelder.add(_restbetragAnzeigerText);
 
@@ -295,12 +295,18 @@ public class BezahlWerkzeugUI extends JDialog
 
     private void refresh()
     {
-        if (!_eingabeFeld.getText()
-            .isEmpty())
+        try
         {
             _eingabe = Double.parseDouble(_eingabeFeld.getText());
             aktualisiereRestbetragAnzeiger();
+        }
+        catch (NumberFormatException e)
+        {
 
+        }
+        if (_restbetragAnzeiger.getText()
+            .length() > 0)
+        {
             if (_restbetragAnzeiger.getText()
                 .charAt(0) == '-' || _restbetragAnzeiger.getText()
                 .equals("0.00"))

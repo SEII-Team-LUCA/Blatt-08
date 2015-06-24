@@ -54,7 +54,6 @@ public class BezahlWerkzeugUI extends JDialog
     private static final String TITEL = "SE2-Bezahlungsansicht SoSe 2015";
     private double _eingabe;
     private int _anzahlKommata;
-    private int _nachkommastellen;
 
     public BezahlWerkzeugUI(int preis, String vorstellungsDaten,
             int anzahlPlaetze)
@@ -198,6 +197,7 @@ public class BezahlWerkzeugUI extends JDialog
                     {
                         _anzahlKommata--;
                     }
+                    break;
                 case '0':
                 case '1':
                 case '2':
@@ -359,16 +359,19 @@ public class BezahlWerkzeugUI extends JDialog
      }*/
 
     private boolean wurdeEinKommaGeloescht()
+    //TODO ZUKUNFTSIHR
+    //_eingabe sieht so aus: xxx.0 oder xxx.x oder xxx.xx oder x.xxEx
+    //ACHTUNG man kann auch 99.00 ins _eingabefeld eingeben!!!
     {
         if (!String.valueOf(_eingabe)
             .contains("E") && String.valueOf(_eingabe)
-            .contains(".") && !String.valueOf(_eingabe)
-            .substring(String.valueOf(_eingabe)
-                .length() - 2)
-            .equals(".0"))
+            .contains(".") && !_eingabeFeld.getText()
+            .contains("."))
         {
-            if (!_eingabeFeld.getText()
-                .contains("."))
+            if (!String.valueOf(_eingabe)
+                .substring(String.valueOf(_eingabe)
+                    .length() - 2)
+                .equals(".0"))
             {
                 return true;
             }

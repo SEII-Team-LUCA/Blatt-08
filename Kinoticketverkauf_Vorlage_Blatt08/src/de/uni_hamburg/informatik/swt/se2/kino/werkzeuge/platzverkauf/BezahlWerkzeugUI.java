@@ -244,8 +244,8 @@ public class BezahlWerkzeugUI extends JDialog
                 //                        _eingabe = Float.parseFloat(_eingabeFeld.getText());
                 //                        aktualisiereRestbetragAnzeiger();
                 //                    }
-                //                    while (_eingabeFeld.getText()
-                //                        .equals("(\\s+\\d+([,\\.]\\d\\d?)?\\s+)"));
+                //                while (_eingabeFeld.getText()
+                //                    .matches("(\\s+\\d+([,\\.]\\d\\d?)?\\s+)"));
                 //                }
                 //                catch (NumberFormatException e1)
                 //                {

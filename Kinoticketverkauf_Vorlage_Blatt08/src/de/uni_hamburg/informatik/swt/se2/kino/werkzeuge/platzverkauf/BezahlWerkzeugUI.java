@@ -54,7 +54,10 @@ public class BezahlWerkzeugUI extends JDialog
 
     private static final String TITEL = "SE2-Bezahlungsansicht SoSe 2015";
     private double _eingabe;
+    private String _eingabeString;
+    private String _eingabeStringRemove;
     private int _anzahlKommata;
+    private int _wieVieleNullenAlsNachkommaStellen;
 
     public BezahlWerkzeugUI(int preis, String vorstellungsDaten,
             int anzahlPlaetze)
@@ -382,11 +385,48 @@ public class BezahlWerkzeugUI extends JDialog
         }
     }
 
+    private void wieVieleNullenAlsNachkommaStellen()
+    {
+        if (_anzahlKommata == 1)
+        {
+            String zeugs = _eingabeStringRemove.substring(_eingabeFeld.getText()
+                .length() - 2);
+            String zeug2 = _eingabeStringRemove.substring(_eingabeFeld.getText()
+                .length() - 1);
+            String zeug3 = _eingabeStringRemove
+                .substring(_eingabeFeld.getText()
+                    .length() - 2, _eingabeFeld.getText()
+                    .length() - 1);
+            String zeug4 = _eingabeFeld.getText()
+                .substring(_eingabeFeld.getText()
+                    .length() - 1);
+            if (zeugs.equals(".00"))
+            {
+                _wieVieleNullenAlsNachkommaStellen = 2;
+            }
+            else if (zeug2.equals(".0")
+                    || (zeug3.equals(".") && zeug4.equals("0")))
+            {
+                _wieVieleNullenAlsNachkommaStellen = 1;
+            }
+            else
+            {
+                _wieVieleNullenAlsNachkommaStellen = 0;
+            }
+        }
+        else
+        {
+            _wieVieleNullenAlsNachkommaStellen = 0;
+        }
+    }
+
     private void refresh()
     {
         try
         {
-            _eingabe = Double.parseDouble(_eingabeFeld.getText());
+            _eingabeStringRemove = _eingabeString;
+            _eingabeString = _eingabeFeld.getText();
+            _eingabe = Double.parseDouble(_eingabeString);
             aktualisiereRestbetragAnzeiger();
         }
         catch (NumberFormatException e)
@@ -430,6 +470,7 @@ public class BezahlWerkzeugUI extends JDialog
     //_eingabe sieht so aus: xxx.0 oder xxx.x oder xxx.xx oder x.xxEx
     //ACHTUNG man kann auch 99.00 ins _eingabefeld eingeben!!!
     {
+        wieVieleNullenAlsNachkommaStellen();
         if (!String.valueOf(_eingabe)
             .contains("E") && String.valueOf(_eingabe)
             .contains(".") && !_eingabeFeld.getText()
@@ -438,7 +479,7 @@ public class BezahlWerkzeugUI extends JDialog
                 .length() - 3)
             .equals(".00"))
         {
-            if (true) //if eingabe iwas,0 ODER iwas,00
+            if (_wieVieleNullenAlsNachkommaStellen > 0) //if eingabe iwas,0 ODER iwas,00
             {
                 return true;
             }

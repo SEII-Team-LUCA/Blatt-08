@@ -156,48 +156,72 @@ public class BezahlWerkzeugUI extends JDialog
                 int position = _eingabeFeld.getCaretPosition();
                 switch (e.getKeyChar())
                 {
+                // wenn Komma
                 case ',':
+                	// loesche Komma
                     e.consume();
+                    // wenn am Anfang des Feldes
                     if (position == 0)
                     {
                     }
+                    // ansonsten
+                    // wenn weniger als ein Komma
+                    // und der Text mindestens noch zwei Zeichen weitergeht als aktuelle Position
                     else if (_anzahlKommata < 1
                             && position + 2 >= _eingabeFeld.getText()
                                 .length())
                     {
+                    	// setze Text des Eingabefeldes auf
                         _eingabeFeld.setText(_eingabeFeld.getText()
+                        // das, was schon darin steht, bis zur aktuellen Position
                             .substring(0, position) + "."
+                        // einen Punkt
                                 + _eingabeFeld.getText()
+                        // und das, was nach der aktuellen Position steht
                                     .substring(position));
+                        // merke, dass ein Komma gesetzt wurde
                         _anzahlKommata++;
                         //                        refresh();
+                        // ruecke Mauszeiger einen weiter
                         _eingabeFeld.setCaretPosition(position + 1);
                         //                        pruefeGroesse();
                         break;
                     }
                     getToolkit().beep();
                     break;
+                // wenn Punkt
                 case '.':
+                	// wenn am Anfang
+                	// ODER mehr als 0 Kommata
+                	// ODER der Text weniger als 2 zeichen weiter geht
                     if (position == 0 || _anzahlKommata > 0
                             || position + 2 < _eingabeFeld.getText()
                                 .length())
                     {
                         //                        _eingabeFeld.setText(_eingabeFeld.getText().substring(_eingabeFeld.getText().length()-2));
+                    	// hupen
                         getToolkit().beep();
+                        // letzte Eingabe loeschen
                         e.consume();
                         break;
                     }
+                    // merke, dass ein Komma gesetzt wurde
                     _anzahlKommata++;
                     //                    refresh();
                     //                    pruefeGroesse();
                     break;
+                // wenn ZURUECK
                 case KeyEvent.VK_BACK_SPACE:
+                // oder DELETE
                 case KeyEvent.VK_DELETE:
+                	// wenn ein Komma geloescht wurde
                     if (wurdeEinKommaGeloescht())
                     {
+                    	// merke, dass ein Komma weniger gelesen wird
                         _anzahlKommata--;
                     }
                     break;
+                // wenn ZAHLEN
                 case '0':
                 case '1':
                 case '2':
@@ -208,22 +232,33 @@ public class BezahlWerkzeugUI extends JDialog
                 case '7':
                 case '8':
                 case '9':
+                	// wenn genau 1 Komma
                     if (_anzahlKommata == 1)
                     {
+                    	// wenn der Text
+                    	// nach der Position des Punktes
+                    	// noch mindestens 2 Felder weitergeht
+                    	// UND nach der Position
+                    	// keine 3 Felder weitergeht
                         if (_eingabeFeld.getText()
                             .indexOf('.') + 2 < _eingabeFeld.getText()
                             .length() && position + 3 > _eingabeFeld.getText()
                             .length())
                         {
+                        	// hupe
                             getToolkit().beep();
+                            // loesche letzte Eingabe
                             e.consume();
                         }
                     }
                     //                    refresh();
                     //                    pruefeGroesse();
                     break;
+                // sonst (UNGUELTIGE EINGABE)
                 default:
+                	// hupe einfach so
                     getToolkit().beep();
+                    // loesche Eingabe
                     e.consume();
                 }
             }

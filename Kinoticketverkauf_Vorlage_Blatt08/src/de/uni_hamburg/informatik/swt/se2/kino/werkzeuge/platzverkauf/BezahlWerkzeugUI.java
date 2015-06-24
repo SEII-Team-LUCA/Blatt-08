@@ -11,6 +11,8 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -57,7 +59,6 @@ public class BezahlWerkzeugUI extends JDialog
     public BezahlWerkzeugUI(int preis, String vorstellungsDaten,
             int anzahlPlaetze)
     {
-        System.out.println("Mau?");
         _preis = preis;
         _vorstellungsDaten = vorstellungsDaten;
         _anzahlPlaetze = anzahlPlaetze;
@@ -170,8 +171,9 @@ public class BezahlWerkzeugUI extends JDialog
                                 + _eingabeFeld.getText()
                                     .substring(position));
                         _anzahlKommata++;
-                        refresh();
+                        //                        refresh();
                         _eingabeFeld.setCaretPosition(position + 1);
+                        //                        pruefeGroesse();
                         break;
                     }
                     getToolkit().beep();
@@ -187,7 +189,8 @@ public class BezahlWerkzeugUI extends JDialog
                         break;
                     }
                     _anzahlKommata++;
-                    refresh();
+                    //                    refresh();
+                    //                    pruefeGroesse();
                     break;
                 case KeyEvent.VK_BACK_SPACE:
                 case KeyEvent.VK_DELETE:
@@ -231,7 +234,8 @@ public class BezahlWerkzeugUI extends JDialog
                     {
                         _nachkommastellen = 1;
                     }
-                    refresh();
+                    //                    refresh();
+                    //                    pruefeGroesse();
                     break;
                 default:
                     getToolkit().beep();
@@ -265,6 +269,29 @@ public class BezahlWerkzeugUI extends JDialog
 
             }
         });
+        _eingabeFeld.getDocument()
+            .addDocumentListener(new DocumentListener()
+            {
+
+                @Override
+                public void changedUpdate(DocumentEvent e)
+                {
+                    //                    refresh();
+                }
+
+                @Override
+                public void insertUpdate(DocumentEvent e)
+                {
+                    refresh();
+                }
+
+                @Override
+                public void removeUpdate(DocumentEvent e)
+                {
+                    refresh();
+                }
+
+            });
         _textFelder.add(_eingabeFeld);
 
         _restbetragAnzeigerText = new JLabel();
@@ -273,13 +300,23 @@ public class BezahlWerkzeugUI extends JDialog
         _textFelder.add(_restbetragAnzeigerText);
 
         _restbetragAnzeiger = new JLabel();
-        _restbetragAnzeiger.setText("");
+        _restbetragAnzeiger.setText(_summeAnzeiger.getText());
         _restbetragAnzeiger.setToolTipText("Zeigt den Saldo der Kasse an.");
         _textFelder.add(_restbetragAnzeiger);
 
         this.add(_textFelder, BorderLayout.CENTER);
 
     }
+
+    //    private void pruefeGroesse()
+    //    {
+    //        if (_eingabeFeld.getText()
+    //            .length() > 6)
+    //        {
+    //            _eingabeFeld.setText(_eingabeFeld.getText()
+    //                .substring(0, 6));
+    //        }
+    //    }
 
     private String preisberechnung()
     {
@@ -303,6 +340,14 @@ public class BezahlWerkzeugUI extends JDialog
         catch (NumberFormatException e)
         {
 
+        }
+        finally
+        {
+            if (_eingabeFeld.getText()
+                .length() == 0)
+            {
+                _restbetragAnzeiger.setText(_summeAnzeiger.getText());
+            }
         }
         if (_restbetragAnzeiger.getText()
             .length() > 0)
@@ -382,12 +427,25 @@ public class BezahlWerkzeugUI extends JDialog
     {
         _restbetragAnzeiger.setText(Double.parseDouble(_summeAnzeiger.getText())
                 - _eingabe + "");
-        if (_nachkommastellen == 1 || _eingabeFeld.getText()
-            .substring(_eingabeFeld.getText()
-                .length() - 2)
-            .equals("00"))
+        //        if (_restbetragAnzeiger.getText()
+        //            .charAt(_restbetragAnzeiger.getText()
+        //                .length() - 1) == '.' )
+        //        {
+        //            _restbetragAnzeiger.setText(_restbetragAnzeiger.getText() + "0");
+        //        }
+        if (_restbetragAnzeiger.getText()
+            .charAt(_restbetragAnzeiger.getText()
+                .length() - 3) != '.')
         {
-            _restbetragAnzeiger.setText(_restbetragAnzeiger.getText() + "0");
+            if (!_restbetragAnzeiger.getText()
+                .contains("E"))
+            {
+                //this.pack();
+                _restbetragAnzeiger.setText(_restbetragAnzeiger.getText() + "0");
+                _restbetragAnzeiger.setText(_restbetragAnzeiger.getText()
+                    .substring(0, _restbetragAnzeiger.getText()
+                        .indexOf('.') + 3));
+            }
         }
     }
 

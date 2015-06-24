@@ -211,28 +211,13 @@ public class BezahlWerkzeugUI extends JDialog
                     if (_anzahlKommata == 1)
                     {
                         if (_eingabeFeld.getText()
-                            .indexOf('.') + 2 == _eingabeFeld.getText()
-                            .length())
-                        {
-                            _nachkommastellen = 2;
-                        }
-                        else if (_eingabeFeld.getText()
                             .indexOf('.') + 2 < _eingabeFeld.getText()
-                            .length() && position + 2 > _eingabeFeld.getText()
+                            .length() && position + 3 > _eingabeFeld.getText()
                             .length())
                         {
-                            _nachkommastellen = 2;
                             getToolkit().beep();
                             e.consume();
                         }
-                        else
-                        {
-                            _nachkommastellen = 1;
-                        }
-                    }
-                    else
-                    {
-                        _nachkommastellen = 1;
                     }
                     //                    refresh();
                     //                    pruefeGroesse();
@@ -375,8 +360,12 @@ public class BezahlWerkzeugUI extends JDialog
 
     private boolean wurdeEinKommaGeloescht()
     {
-        if (String.valueOf(_eingabe)
-            .contains("."))
+        if (!String.valueOf(_eingabe)
+            .contains("E") && String.valueOf(_eingabe)
+            .contains(".") && !String.valueOf(_eingabe)
+            .substring(String.valueOf(_eingabe)
+                .length() - 2)
+            .equals(".0"))
         {
             if (!_eingabeFeld.getText()
                 .contains("."))

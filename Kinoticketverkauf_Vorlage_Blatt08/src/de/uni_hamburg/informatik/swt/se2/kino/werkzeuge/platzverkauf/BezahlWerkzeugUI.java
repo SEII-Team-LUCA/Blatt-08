@@ -9,6 +9,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+//import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
@@ -158,7 +159,7 @@ public class BezahlWerkzeugUI extends JDialog
                 {
                 // wenn Komma
                 case ',':
-                	// loesche Komma
+                    // loesche Komma
                     e.consume();
                     // wenn am Anfang des Feldes
                     if (position == 0)
@@ -171,13 +172,13 @@ public class BezahlWerkzeugUI extends JDialog
                             && position + 2 >= _eingabeFeld.getText()
                                 .length())
                     {
-                    	// setze Text des Eingabefeldes auf
+                        // setze Text des Eingabefeldes auf
                         _eingabeFeld.setText(_eingabeFeld.getText()
-                        // das, was schon darin steht, bis zur aktuellen Position
+                            // das, was schon darin steht, bis zur aktuellen Position
                             .substring(0, position) + "."
                         // einen Punkt
                                 + _eingabeFeld.getText()
-                        // und das, was nach der aktuellen Position steht
+                                    // und das, was nach der aktuellen Position steht
                                     .substring(position));
                         // merke, dass ein Komma gesetzt wurde
                         _anzahlKommata++;
@@ -191,15 +192,15 @@ public class BezahlWerkzeugUI extends JDialog
                     break;
                 // wenn Punkt
                 case '.':
-                	// wenn am Anfang
-                	// ODER mehr als 0 Kommata
-                	// ODER der Text weniger als 2 zeichen weiter geht
+                    // wenn am Anfang
+                    // ODER mehr als 0 Kommata
+                    // ODER der Text weniger als 2 zeichen weiter geht
                     if (position == 0 || _anzahlKommata > 0
                             || position + 2 < _eingabeFeld.getText()
                                 .length())
                     {
                         //                        _eingabeFeld.setText(_eingabeFeld.getText().substring(_eingabeFeld.getText().length()-2));
-                    	// hupen
+                        // hupen
                         getToolkit().beep();
                         // letzte Eingabe loeschen
                         e.consume();
@@ -212,12 +213,12 @@ public class BezahlWerkzeugUI extends JDialog
                     break;
                 // wenn ZURUECK
                 case KeyEvent.VK_BACK_SPACE:
-                // oder DELETE
+                    // oder DELETE
                 case KeyEvent.VK_DELETE:
-                	// wenn ein Komma geloescht wurde
+                    // wenn ein Komma geloescht wurde
                     if (wurdeEinKommaGeloescht())
                     {
-                    	// merke, dass ein Komma weniger gelesen wird
+                        // merke, dass ein Komma weniger gelesen wird
                         _anzahlKommata--;
                     }
                     break;
@@ -232,20 +233,20 @@ public class BezahlWerkzeugUI extends JDialog
                 case '7':
                 case '8':
                 case '9':
-                	// wenn genau 1 Komma
+                    // wenn genau 1 Komma
                     if (_anzahlKommata == 1)
                     {
-                    	// wenn der Text
-                    	// nach der Position des Punktes
-                    	// noch mindestens 2 Felder weitergeht
-                    	// UND nach der Position
-                    	// keine 3 Felder weitergeht
+                        // wenn der Text
+                        // nach der Position des Punktes
+                        // noch mindestens 2 Felder weitergeht
+                        // UND nach der Position der Maus
+                        // keine 3 Felder weitergeht
                         if (_eingabeFeld.getText()
                             .indexOf('.') + 2 < _eingabeFeld.getText()
                             .length() && position + 3 > _eingabeFeld.getText()
                             .length())
                         {
-                        	// hupe
+                            // hupe
                             getToolkit().beep();
                             // loesche letzte Eingabe
                             e.consume();
@@ -256,7 +257,7 @@ public class BezahlWerkzeugUI extends JDialog
                     break;
                 // sonst (UNGUELTIGE EINGABE)
                 default:
-                	// hupe einfach so
+                    // hupe einfach so
                     getToolkit().beep();
                     // loesche Eingabe
                     e.consume();
@@ -266,14 +267,45 @@ public class BezahlWerkzeugUI extends JDialog
             @Override
             public void keyReleased(KeyEvent e)
             {
+                //                String _eingabeString;
+                //                if (e.getKeyCode() == e.VK_ENTER)
+                //                {
+                //                    _eingabeString = _eingabeFeld.getText();
+                //                    if (!_eingabeString.matches("/^\\s*([\\d^,]+[,\\.](\\d?){2}\\s*/$"))
+                //                    {
+                //                        fehler();
+                //                    }
+                //                    else
+                //                    {
+                //                        _eingabeString = _eingabeString.replaceAll(",", "\\.");
+                //                        // double
+                //                        double _betragInDouble = Double.parseDouble(_eingabeString);
+                //
+                //                        // string
+                //                        if (_eingabeString.matches("\\d+,"))
+                //                        {
+                //                            _eingabeString = _eingabeString + "00";
+                //                        }
+                //                        else if (_eingabeString.matches("\\d+,\\d"))
+                //                        {
+                //                            _eingabeString = _eingabeString + "0";
+                //                        }
+                //
+                //                        // int
+                //                        _eingabeString.replaceAll("\\.", "");
+                //                        int _eingabeInIntFuerEurocent = Integer.parseInt(_eingabeString);
+                //
+                //                    } // end else [if (!_eingabe.matches("/^\\s*([\\d^,]+[,\\.](\\d?){2}\\s*/$"))]
+                //
+                //                } // end if (e.getKeyKode() == VK_ENTER)
 
-            }
+            } // end keyReleased( KeyEvent e ) 
 
             @Override
             public void keyPressed(KeyEvent e)
             {
-                //                try
-                //                {
+                //                                try
+                //                                {
                 //                    do
                 //                    {
                 //                        _eingabe = Float.parseFloat(_eingabeFeld.getText());
@@ -385,13 +417,13 @@ public class BezahlWerkzeugUI extends JDialog
         }
     }
 
-    /*private void fehler()
-     {
-         JOptionPane error = new JOptionPane(JOptionPane.OK_OPTION);
-         error.showMessageDialog(this, "Bitte nur Zahlen eingeben.", "Warnung",
-                 JOptionPane.WARNING_MESSAGE);
-         error.setVisible(true);
-     }*/
+    //    private void fehler()
+    //    {
+    //        JOptionPane error = new JOptionPane(JOptionPane.OK_OPTION);
+    //        error.showMessageDialog(this, "Bitte nur Zahlen eingeben.", "Warnung",
+    //                JOptionPane.WARNING_MESSAGE);
+    //        error.setVisible(true);
+    //    }
 
     private boolean wurdeEinKommaGeloescht()
     //TODO ZUKUNFTSIHR
@@ -401,12 +433,12 @@ public class BezahlWerkzeugUI extends JDialog
         if (!String.valueOf(_eingabe)
             .contains("E") && String.valueOf(_eingabe)
             .contains(".") && !_eingabeFeld.getText()
-            .contains("."))
+            .contains(".") && _restbetragAnzeiger.getText()
+            .substring(_restbetragAnzeiger.getText()
+                .length() - 3)
+            .equals(".00"))
         {
-            if (!String.valueOf(_eingabe)
-                .substring(String.valueOf(_eingabe)
-                    .length() - 2)
-                .equals(".0"))
+            if (true) //if eingabe iwas,0 ODER iwas,00
             {
                 return true;
             }

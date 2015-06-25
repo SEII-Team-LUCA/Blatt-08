@@ -2,6 +2,7 @@ package de.uni_hamburg.informatik.swt.se2.kino.werkzeuge.platzverkauf;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -12,6 +13,7 @@ import javax.swing.JLabel;
 //import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 
@@ -58,6 +60,7 @@ public class BezahlWerkzeugUI extends JDialog
     private String _eingabeStringRemove;
     private int _anzahlKommata;
     private int _wieVieleNullenAlsNachkommaStellen;
+    private boolean _externeTastatureingabe;
 
     public BezahlWerkzeugUI(int preis, String vorstellungsDaten,
             int anzahlPlaetze)
@@ -258,13 +261,28 @@ public class BezahlWerkzeugUI extends JDialog
                     //                    refresh();
                     //                    pruefeGroesse();
                     break;
-                // sonst (UNGUELTIGE EINGABE)
+                case 'v':
+                    e.consume();
+                    pruefeObSteuerung();
+                    _externeTastatureingabe = true;
+                case 'x':
+                    e.consume();
+                    pruefeObSteuerung();
+                    _externeTastatureingabe = true;
+                    // sonst (UNGUELTIGE EINGABE)
                 default:
                     // hupe einfach so
                     getToolkit().beep();
                     // loesche Eingabe
                     e.consume();
                 }
+            }
+
+            private void pruefeObSteuerung()
+            {
+                
+                KeyStroke.getKeyStroke(KeyEvent.VK_C, InputEvent.CTRL_MASK);
+                
             }
 
             @Override
@@ -337,12 +355,18 @@ public class BezahlWerkzeugUI extends JDialog
                 @Override
                 public void insertUpdate(DocumentEvent e)
                 {
+                    _eingabeStringRemove = _eingabeString;
+                    _eingabeString = _eingabeFeld.getText();
+                    pruefeEingabe();
                     refresh();
                 }
 
                 @Override
                 public void removeUpdate(DocumentEvent e)
                 {
+                    _eingabeStringRemove = _eingabeString;
+                    _eingabeString = _eingabeFeld.getText();
+                    pruefeLoeschung();
                     refresh();
                 }
 
@@ -361,6 +385,49 @@ public class BezahlWerkzeugUI extends JDialog
 
         this.add(_textFelder, BorderLayout.CENTER);
 
+    }
+
+    private void pruefeEingabe() //prüft, ob der durch strg+v eingefügte string gültig ist
+    {
+        if (_externeTastatureingabe)
+        {
+            int position = _eingabeFeld.getCaretPosition();
+            if (_eingabeStringRemove.contains(".")
+                    && !_eingabeString.contains(".") && (_eingabeFeld.getText()
+                        .indexOf('.') + 2 < _eingabeFeld.getText()
+                        .length() && position + 3 > _eingabeFeld.getText()
+                        .length()))
+            {
+            }
+            else if (!_eingabeStringRemove.contains(".")
+                    && !_eingabeString.contains("."))
+            {
+            }
+            else if (!_eingabeStringRemove.contains(".")
+                    && _eingabeString.contains(".") && (_eingabeFeld.getText()
+                        .indexOf('.') + 2 < _eingabeFeld.getText()
+                        .length() && position + 3 > _eingabeFeld.getText()
+                        .length()))
+            {
+            }
+            else
+            {
+                _eingabeFeld.setText(_eingabeStringRemove);
+                getToolkit().beep();
+            }
+        }
+    }
+
+    private void pruefeLoeschung() //prüft, ob der String im Feld auch ohne den durch strg+x rausgelösten string noch gültig ist
+    {
+        if (_externeTastatureingabe)
+        {
+            if (_eingabeStringRemove.contains(".")
+                    && !_eingabeString.contains("."))
+            {
+                _anzahlKommata--;
+            }
+        }
     }
 
     //    private void pruefeGroesse()
@@ -393,10 +460,10 @@ public class BezahlWerkzeugUI extends JDialog
                 .length() - 2);
             String zeug2 = _eingabeStringRemove.substring(_eingabeFeld.getText()
                 .length() - 1);
-            String zeug3 = _eingabeStringRemove
-                .substring(_eingabeFeld.getText()
-                    .length() - 2, _eingabeFeld.getText()
-                    .length() - 1);
+            String zeug3 = _eingabeStringRemove.substring(
+                    _eingabeFeld.getText()
+                        .length() - 2, _eingabeFeld.getText()
+                        .length() - 1);
             String zeug4 = _eingabeFeld.getText()
                 .substring(_eingabeFeld.getText()
                     .length() - 1);
@@ -409,7 +476,8 @@ public class BezahlWerkzeugUI extends JDialog
             {
                 _wieVieleNullenAlsNachkommaStellen = 1;
             }
-            else if(_eingabeStringRemove.contains(".") && !_eingabeString.contains("."))
+            else if (_eingabeStringRemove.contains(".")
+                    && !_eingabeString.contains("."))
             {
                 _wieVieleNullenAlsNachkommaStellen = 3; //wenn da iwas,iwas steht
             }
@@ -428,8 +496,6 @@ public class BezahlWerkzeugUI extends JDialog
     {
         try
         {
-            _eingabeStringRemove = _eingabeString;
-            _eingabeString = _eingabeFeld.getText();
             _eingabe = Double.parseDouble(_eingabeString);
             aktualisiereRestbetragAnzeiger();
         }

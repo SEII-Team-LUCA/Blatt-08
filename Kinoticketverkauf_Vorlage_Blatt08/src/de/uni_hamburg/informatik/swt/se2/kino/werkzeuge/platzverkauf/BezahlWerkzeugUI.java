@@ -409,6 +409,10 @@ public class BezahlWerkzeugUI extends JDialog
             {
                 _wieVieleNullenAlsNachkommaStellen = 1;
             }
+            else if(_eingabeStringRemove.contains(".") && !_eingabeString.contains("."))
+            {
+                _wieVieleNullenAlsNachkommaStellen = 3; //wenn da iwas,iwas steht
+            }
             else
             {
                 _wieVieleNullenAlsNachkommaStellen = 0;
@@ -479,7 +483,7 @@ public class BezahlWerkzeugUI extends JDialog
                 .length() - 3)
             .equals(".00"))
         {
-            if (_wieVieleNullenAlsNachkommaStellen > 0) //if eingabe iwas,0 ODER iwas,00
+            if (_wieVieleNullenAlsNachkommaStellen > 0) //if eingabe iwas,0 ODER iwas,00 ODER iwas,iwas
             {
                 return true;
             }

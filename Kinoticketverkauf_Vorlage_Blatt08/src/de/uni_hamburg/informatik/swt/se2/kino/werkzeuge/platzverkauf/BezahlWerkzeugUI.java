@@ -229,7 +229,7 @@ public class BezahlWerkzeugUI extends JDialog
 
         _vorstellungsText = new JLabel();
         _vorstellungsText.setText(_vorstellungsDaten);
-        _vorstellungsText.setToolTipText("[Datum] - FILM (Saal x: Zeit)");
+        _vorstellungsText.setToolTipText("[Datum] - FILM (Saal x: Startzeit)");
         _vorangaben.add(_vorstellungsText);
 
         _anzahlPlaetzeText = new JLabel();

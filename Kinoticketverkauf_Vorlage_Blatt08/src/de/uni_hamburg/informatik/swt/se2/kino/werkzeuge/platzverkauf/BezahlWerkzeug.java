@@ -77,15 +77,19 @@ public class BezahlWerkzeug implements Beobachter
      */
     private String getVorstellungsDaten()
     {
-        return ("[" + _vorstellung.getDatum()
-            .getTag() + "." + _vorstellung.getDatum()
-            .getMonat() + "." + _vorstellung.getDatum()
-            .getJahr() + "] - " + _vorstellung.getFilm()
-            .toString()
-            .toUpperCase()
-            .substring(12) + " (" + _vorstellung.getKinosaal()
-            .toString()
-            .substring(15) + ": " + _vorstellung.getAnfangszeit() + ")");
+        return ("["
+                + _vorstellung.getDatum().getTag()
+                + "."
+                + _vorstellung.getDatum().getMonat()
+                + "."
+                + _vorstellung.getDatum().getJahr()
+                + "] - "
+                + _vorstellung.getFilm().toString().toUpperCase().substring(12)
+                + " ("
+                + _vorstellung.getKinosaal().toString().substring(15)
+                + ": "
+                + _vorstellung.getAnfangszeit()
+                + ")");
     }
 
     /**

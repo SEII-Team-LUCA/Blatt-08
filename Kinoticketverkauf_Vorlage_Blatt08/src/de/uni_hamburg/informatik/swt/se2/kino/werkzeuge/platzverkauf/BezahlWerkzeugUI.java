@@ -320,4 +320,16 @@ public class BezahlWerkzeugUI extends JDialog
     {
         return _aktuellerEingabewert;
     }
+    
+    /**
+     * Eine Fehlermeldung, die das aktuelle Fenster sperrt.
+     * Eventuell später mal einbinden.
+     */
+    //    private void fehler()
+    //    {
+    //        JOptionPane error = new JOptionPane(JOptionPane.OK_OPTION);
+    //        error.showMessageDialog(this, "Bitte nur sinvolle Geldwerte eingeben.", "Warnung",
+    //                JOptionPane.WARNING_MESSAGE);
+    //        error.setVisible(true);
+    //    }
 }

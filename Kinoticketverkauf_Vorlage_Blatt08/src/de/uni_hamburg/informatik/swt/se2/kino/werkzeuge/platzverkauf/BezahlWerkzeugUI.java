@@ -103,7 +103,7 @@ public class BezahlWerkzeugUI extends JDialog
     {
         for (Beobachter beobachter : _beobachter)
         {
-            beobachter.reagiereAufAenderung();
+            beobachter.reagiereAufAenderung(this);
         }
     }
 

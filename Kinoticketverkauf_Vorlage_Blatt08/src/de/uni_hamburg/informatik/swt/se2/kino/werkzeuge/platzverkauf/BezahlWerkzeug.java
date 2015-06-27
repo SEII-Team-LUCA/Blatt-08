@@ -95,8 +95,9 @@ public class BezahlWerkzeug implements Beobachter
      * Der Beobachter reagiert auf eine Änderung, die ihm durch eine beobachtbare Klasse (in unserem Fall die GUI, die die entsprechenden Methoden selber zur Verfügung stellt, ohne Beobachtbar zu extenden [man kann nur einer Klasse extenden]) mitgeteilt wurde.
      */
     @Override
-    public void reagiereAufAenderung()
+    public void reagiereAufAenderung(BezahlWerkzeugUI ui)
     {
+        _ui = ui;
         if (pruefeObGueltigeEingabe())
         {
             setzeRestbetrag();
@@ -109,7 +110,7 @@ public class BezahlWerkzeug implements Beobachter
     }
 
     /**
-     * Sofern der eingegebene String nicht der Eingabevorschrift entspricht, setze ihn auf den Wert, den er vor der letzen veränderung hatte, zurück.
+     * Sofern der eingegebene String nicht der Eingabevorschrift entspricht, setze ihn auf den Wert, den er vor der letzen Veränderung hatte, zurück.
      */
     private void stelleAltenWertWiederHer()
     {
@@ -280,14 +281,19 @@ public class BezahlWerkzeug implements Beobachter
      */
     private boolean istEsEinGueltigesSymbol(int i)
     {
-        if (_eingabe.charAt(i) == '0' || _eingabe.charAt(i) == '1'
-                || _eingabe.charAt(i) == '2' || _eingabe.charAt(i) == '3'
-                || _eingabe.charAt(i) == '4' || _eingabe.charAt(i) == '5'
-                || _eingabe.charAt(i) == '6' || _eingabe.charAt(i) == '7'
-                || _eingabe.charAt(i) == '8' || _eingabe.charAt(i) == '9'
-                || _eingabe.charAt(i) == ',' || _eingabe.charAt(i) == '.')
+        if (_eingabe.charAt(i - 1) == '0' || _eingabe.charAt(i - 1) == '1'
+                || _eingabe.charAt(i - 1) == '2'
+                || _eingabe.charAt(i - 1) == '3'
+                || _eingabe.charAt(i - 1) == '4'
+                || _eingabe.charAt(i - 1) == '5'
+                || _eingabe.charAt(i - 1) == '6'
+                || _eingabe.charAt(i - 1) == '7'
+                || _eingabe.charAt(i - 1) == '8'
+                || _eingabe.charAt(i - 1) == '9'
+                || _eingabe.charAt(i - 1) == ','
+                || _eingabe.charAt(i - 1) == '.')
         {
-            if (_eingabe.charAt(i) == ',' || _eingabe.charAt(i) == '.')
+            if (_eingabe.charAt(i - 1) == ',' || _eingabe.charAt(i - 1) == '.')
             {
                 _anzahlKommata++;
             }

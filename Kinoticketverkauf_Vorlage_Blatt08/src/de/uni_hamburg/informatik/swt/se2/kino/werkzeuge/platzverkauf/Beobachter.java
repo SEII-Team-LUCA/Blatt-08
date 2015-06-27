@@ -12,6 +12,6 @@ public interface Beobachter
      * 
      * @param i ein int zur Differenzierung der aufrufenden Klasse
      */
-    public void reagiereAufAenderung();
+    public void reagiereAufAenderung(BezahlWerkzeugUI ui);
 
 }

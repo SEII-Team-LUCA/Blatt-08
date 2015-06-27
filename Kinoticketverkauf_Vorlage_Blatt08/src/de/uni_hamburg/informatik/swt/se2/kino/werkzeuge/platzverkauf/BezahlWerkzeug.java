@@ -117,9 +117,9 @@ public class BezahlWerkzeug implements Beobachter
         try
         {
             int MausZeigerPosition;
-            MausZeigerPosition = _ui._eingabeFeld.getCaretPosition();
-            _ui._eingabeFeld.setText(_ui.alteEingabe());
-            _ui._eingabeFeld.setCaretPosition(MausZeigerPosition);
+            MausZeigerPosition = _ui.getEingabeMausPosition();
+            _ui.setzeEingabeText(_ui.alteEingabe());
+            _ui.setzeEingabeMausPosition(MausZeigerPosition);
         }
         catch (NullPointerException e)
         { // wenn der Codefluss hier landet, ist das Eingabefeld leer
@@ -133,7 +133,7 @@ public class BezahlWerkzeug implements Beobachter
      */
     private void setzeRestbetrag()
     {
-        _ui._restbetragAnzeiger.setText(endpreis());
+        _ui.setzeRestbetrag(endpreis());
 
     }
 
@@ -161,25 +161,25 @@ public class BezahlWerkzeug implements Beobachter
     private long getEingabePreis()
     {
         String EingabeFeldInhalt;
-        if (_ui._eingabeFeld.getText()
+        if (_ui.gibEingabeString()
             .contains("."))
         { // wenn die Eingabe ein Komma enthält
-            if (_ui._eingabeFeld.getText()
-                .indexOf('.') == _ui._eingabeFeld.getText()
+            if (_ui.gibEingabeString()
+                .indexOf('.') == _ui.gibEingabeString()
                 .length())
             { // wenn nach dem Komma keine Ziffern mehr folgen
-                EingabeFeldInhalt = _ui._eingabeFeld.getText()
-                    .substring(0, _ui._eingabeFeld.getText()
+                EingabeFeldInhalt = _ui.gibEingabeString()
+                    .substring(0, _ui.gibEingabeString()
                         .indexOf(".")) + "00";
             }
-            else if (_ui._eingabeFeld.getText()
-                .indexOf('.') + 1 == _ui._eingabeFeld.getText()
+            else if (_ui.gibEingabeString()
+                .indexOf('.') + 1 == _ui.gibEingabeString()
                 .length())
             { // wenn nach dem Komma noch genau Eine Ziffer folgt
-                EingabeFeldInhalt = _ui._eingabeFeld.getText()
-                    .substring(0, _ui._eingabeFeld.getText()
-                        .indexOf(".")) + _ui._eingabeFeld.getText()
-                    .substring(_ui._eingabeFeld.getText()
+                EingabeFeldInhalt = _ui.gibEingabeString()
+                    .substring(0, _ui.gibEingabeString()
+                        .indexOf(".")) + _ui.gibEingabeString()
+                    .substring(_ui.gibEingabeString()
                         .indexOf(".") + 1) + "0";
             }
             else
@@ -187,16 +187,16 @@ public class BezahlWerkzeug implements Beobachter
             //                .indexOf('.') + 2 == _ui._eingabeFeld.getText()
             //                .length())
             { // wenn nach dem Komma noch genau Zwei Ziffern folgen
-                EingabeFeldInhalt = _ui._eingabeFeld.getText()
-                    .substring(0, _ui._eingabeFeld.getText()
-                        .indexOf(".")) + _ui._eingabeFeld.getText()
-                    .substring(_ui._eingabeFeld.getText()
+                EingabeFeldInhalt = _ui.gibEingabeString()
+                    .substring(0, _ui.gibEingabeString()
+                        .indexOf(".")) + _ui.gibEingabeString()
+                    .substring(_ui.gibEingabeString()
                         .indexOf(".") + 1);
             }
         }
         else
         {
-            EingabeFeldInhalt = _ui._eingabeFeld.getText() + "00";
+            EingabeFeldInhalt = _ui.gibEingabeString() + "00";
         }
         return Long.parseLong(EingabeFeldInhalt);
     }
@@ -254,7 +254,7 @@ public class BezahlWerkzeug implements Beobachter
     {
         if (_eingabe.contains(","))
         {
-            _ui._eingabeFeld.setText(_eingabe.substring(0,
+            _ui.setzeEingabeText(_eingabe.substring(0,
                     _eingabe.indexOf(','))
                     + "." + _eingabe.substring(_eingabe.indexOf(',') + 1));
         }

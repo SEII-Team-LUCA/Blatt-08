@@ -41,9 +41,9 @@ public class BezahlWerkzeugUI extends JDialog
     private JLabel _summeAnzeigerText;
     private JLabel _summeAnzeiger;
     private JLabel _eingabeFeldText;
-    JTextField _eingabeFeld;
+    private JTextField _eingabeFeld;
     private JLabel _restbetragAnzeigerText;
-    JLabel _restbetragAnzeiger;
+    private JLabel _restbetragAnzeiger;
 
     private JPanel _knoepfe;
     private JButton _okButton;
@@ -320,7 +320,55 @@ public class BezahlWerkzeugUI extends JDialog
     {
         return _aktuellerEingabewert;
     }
+
+    /**
+     * Bietet die Möglichkeit, einen String von außen in das Eingabefeld zu schreiben.
+     * 
+     * @param zuSetzendeEingabe der Text, der in das Eingabefeld geschrieben werden soll
+     */
+    public void setzeEingabeText(String zuSetzendeEingabe)
+    {
+        _eingabeFeld.setText(zuSetzendeEingabe);
+    }
+
+    /**
+     * Bietet die Möglichkeit, das Eingabefeld von außen auslesen zu können.
+     * 
+     * @return der Text aus dem Eingabefeld
+     */
+    public String gibEingabeString()
+    {
+        return _eingabeFeld.getText();
+    }
+
+    /**
+     * Bietet die Möglichkeit, die Mausposition im Eingabefeld von außen zu setzen.
+     */
+    public void setzeEingabeMausPosition(int MausZeigerPosition)
+    {
+        _eingabeFeld.setCaretPosition(MausZeigerPosition);
+    }
+
+    /**
+     * Bietet die Möglichkeit, die Mausposition im Eingabefeld von außen auslesen zu können.
+     * 
+     * @return die Mausposition im Eingabefeld
+     */
+    public int getEingabeMausPosition()
+    {
+        return _eingabeFeld.getCaretPosition();
+    }
     
+    /**
+     * Bietet die Möglichkeit, von außen einen Restbetrag zu setzen.
+     * 
+     * @param Restbetrag der Restbetrag
+     */
+    public void setzeRestbetrag(String Restbetrag)
+    {
+        _restbetragAnzeiger.setText(Restbetrag);
+    }
+
     /**
      * Eine Fehlermeldung, die das aktuelle Fenster sperrt.
      * Eventuell später mal einbinden.

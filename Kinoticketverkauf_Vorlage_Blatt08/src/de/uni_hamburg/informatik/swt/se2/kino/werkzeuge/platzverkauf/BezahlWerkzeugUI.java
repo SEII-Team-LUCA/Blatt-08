@@ -311,7 +311,7 @@ public class BezahlWerkzeugUI extends JDialog
     }
 
     /**
-     * Eine Methode, um den veränderten Inhalt - durch Tasteneingabe, oder Ähnliches - aus dem _eingabeFeld von außen lesen zu können.
+     * Eine Methode, um den veränderten Inhalt - durch Tasteneingabe, oder Ähnliches - des _eingabeFeld-es von außen lesen zu können.
      * 
      * @return der veränderte Inhalt des _eingabeFeld-es
      */

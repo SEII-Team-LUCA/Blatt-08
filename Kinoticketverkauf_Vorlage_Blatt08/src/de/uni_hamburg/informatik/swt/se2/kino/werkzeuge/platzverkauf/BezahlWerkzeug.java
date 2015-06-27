@@ -19,6 +19,7 @@ public class BezahlWerkzeug implements Beobachter
     private Vorstellung _vorstellung;
     private int _preis;
     private String _eingabe;
+    private int _anzahlKommata;
 
     //    private final String _eingabeVorschrift;
 
@@ -208,10 +209,14 @@ public class BezahlWerkzeug implements Beobachter
     private boolean pruefeObGueltigeEingabe()
     {
         _eingabe = _ui.aktuelleEingabe();
+        _anzahlKommata = 0;
         //        if (Eingabe.matches(_eingabeVorschrift))
         if (istDieEingabeGueltig())
         {
-            return true;
+            if (_anzahlKommata < 2)
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -282,6 +287,10 @@ public class BezahlWerkzeug implements Beobachter
                 || _eingabe.charAt(i) == '8' || _eingabe.charAt(i) == '9'
                 || _eingabe.charAt(i) == ',' || _eingabe.charAt(i) == '.')
         {
+            if (_eingabe.charAt(i) == ',' || _eingabe.charAt(i) == '.')
+            {
+                _anzahlKommata++;
+            }
             return true;
         }
         return false;

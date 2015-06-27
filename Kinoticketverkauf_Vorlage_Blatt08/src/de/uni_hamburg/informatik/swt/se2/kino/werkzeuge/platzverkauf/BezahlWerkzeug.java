@@ -18,14 +18,16 @@ public class BezahlWerkzeug implements Beobachter
     private int _anzahlPlaetze;
     private Vorstellung _vorstellung;
     private int _preis;
-    private final String _eingabeVorschrift;
+    private String _eingabe;
+
+    //    private final String _eingabeVorschrift;
 
     /**
      * Initialisiert das BezahlWerkzeug insofern, als dass die Vorschrift, die jede Eingabe befolgen muss, gesetzt wird.
      */
     public BezahlWerkzeug()
     {
-        _eingabeVorschrift = "((\\d*([,\\.]\\d?{2})?)?)";
+        //        _eingabeVorschrift = "((\\d*([,\\.]\\d?{2})?)?)";
         // der String darf nur in der folgenden Form bestehen:
         // beliebig viele Ziffern - ein . - 0 bis 2 Nachkommastellen
     }
@@ -77,19 +79,15 @@ public class BezahlWerkzeug implements Beobachter
      */
     private String getVorstellungsDaten()
     {
-        return ("["
-                + _vorstellung.getDatum().getTag()
-                + "."
-                + _vorstellung.getDatum().getMonat()
-                + "."
-                + _vorstellung.getDatum().getJahr()
-                + "] - "
-                + _vorstellung.getFilm().toString().toUpperCase().substring(12)
-                + " ("
-                + _vorstellung.getKinosaal().toString().substring(15)
-                + ": "
-                + _vorstellung.getAnfangszeit()
-                + ")");
+        return ("[" + _vorstellung.getDatum()
+            .getTag() + "." + _vorstellung.getDatum()
+            .getMonat() + "." + _vorstellung.getDatum()
+            .getJahr() + "] - " + _vorstellung.getFilm()
+            .toString()
+            .toUpperCase()
+            .substring(12) + " (" + _vorstellung.getKinosaal()
+            .toString()
+            .substring(15) + ": " + _vorstellung.getAnfangszeit() + ")");
     }
 
     /**
@@ -202,21 +200,88 @@ public class BezahlWerkzeug implements Beobachter
     }
 
     /**
-     * Prüft, ob die Eingabe der Vorschrift entspricht.
+     * Prüft, ob die Eingabe gültig ist.
+     * (Eine gültige Eingabe besteht nur aus einer Zahl mit bis zu 2 Nachkommastellen.)
      * 
-     * @return entspricht die Eingabe der Vorschrift?
+     * @return ist die Eingabe gültig?
      */
     private boolean pruefeObGueltigeEingabe()
     {
-        String Eingabe = _ui.aktuelleEingabe();
-        if (Eingabe.matches(_eingabeVorschrift))
+        _eingabe = _ui.aktuelleEingabe();
+        //        if (Eingabe.matches(_eingabeVorschrift))
+        if (istDieEingabeGueltig())
         {
-            if (Eingabe.contains(","))
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Geht die Gesamte Eingabe durch und prüft für jedes Symbol, ob es ein gültiges Symbol ist.
+     * (Gültige Symbole sind: Ziffern von 0 bis 9, Kommata und Punkte.)
+     * 
+     * @return ist die komplette Eingabe gültig?
+     */
+    private boolean istDieEingabeGueltig()
+    {
+        int zaehler = 0;
+        for (int i = _eingabe.length(); i > 0; i--)
+        {
+            if (istEsEinGueltigesSymbol(i))
             {
-                _ui._eingabeFeld.setText(Eingabe.substring(0,
-                        Eingabe.indexOf(','))
-                        + "." + Eingabe.substring(Eingabe.indexOf(',') + 1));
+                zaehler++;
             }
+        }
+        if (zaehler == _eingabe.length())
+        {
+            return gibtEsNurBisZuZweiNachkommastellen();
+        }
+        return false;
+    }
+
+    /**
+     * Prüft, ob die Eingabe nur bis zu zwei Nachkommastellen besitzt.
+     * 
+     * @return besitzt die Eingabe nur bis zu Zwei Nachkommastellen?
+     */
+    private boolean gibtEsNurBisZuZweiNachkommastellen()
+    {
+        if (_eingabe.contains(","))
+        {
+            _ui._eingabeFeld.setText(_eingabe.substring(0,
+                    _eingabe.indexOf(','))
+                    + "." + _eingabe.substring(_eingabe.indexOf(',') + 1));
+        }
+        if (_eingabe.contains("."))
+        {
+            if (_eingabe.indexOf('.') + 2 <= _eingabe.length())
+            {
+
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Prüft für ein gegebenes Symbol an der Stelle i, ob es sich um ein gültiges Symbol handelt.
+     * (Gültige Symbole sind: Ziffern von 0 bis 9, Kommata und Punkte.)
+     * 
+     * @param i die Stelle, an der das Symbol steht, welches überprüft werden soll
+     * @return ist das Symbol gültig?
+     */
+    private boolean istEsEinGueltigesSymbol(int i)
+    {
+        if (_eingabe.charAt(i) == '0' || _eingabe.charAt(i) == '1'
+                || _eingabe.charAt(i) == '2' || _eingabe.charAt(i) == '3'
+                || _eingabe.charAt(i) == '4' || _eingabe.charAt(i) == '5'
+                || _eingabe.charAt(i) == '6' || _eingabe.charAt(i) == '7'
+                || _eingabe.charAt(i) == '8' || _eingabe.charAt(i) == '9'
+                || _eingabe.charAt(i) == ',' || _eingabe.charAt(i) == '.')
+        {
             return true;
         }
         return false;

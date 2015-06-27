@@ -307,7 +307,6 @@ public class BezahlWerkzeugUI extends JDialog
      */
     public String alteEingabe()
     {
-        // TODO Auto-generated method stub
         return _alterEingabewert;
     }
 
